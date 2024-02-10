@@ -1,6 +1,5 @@
 package main.logging_service;
 
-import main.messages_service.MessagesService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
