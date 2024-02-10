@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MessagesController {
     @GetMapping("/get-message")
     public String getStaticMessage() {
+        System.out.println("Messages returned");
         return "Messages Service not implemented yet";
     }
 }

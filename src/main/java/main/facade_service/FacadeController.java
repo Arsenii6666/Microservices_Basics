@@ -32,13 +32,15 @@ public class FacadeController {
         HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(payload, headers);
         String loggingServiceUrl = "http://localhost:8082/log-message";
         String response = restTemplate.postForObject(loggingServiceUrl, requestEntity, String.class);
+        System.out.println("Message sent");
         return "Message sent with UUID: " + uuid + ", Result: " + response;
     }
     @GetMapping("/get-messages")
     public String getMessages() {
         String loggingResult = restTemplate.getForObject("http://localhost:8082/get-all-messages", String.class);
         String MessagesResult = restTemplate.getForObject("http://localhost:8083/get-message", String.class);
-        return "Logging:"+loggingResult+"\n"+"Messages:"+MessagesResult+"\n";
+        System.out.println("Messages got");
+        return "Logging: "+loggingResult+"\n"+"Messages: "+MessagesResult+"\n";
     }
 
 }

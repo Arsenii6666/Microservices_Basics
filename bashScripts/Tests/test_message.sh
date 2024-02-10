@@ -1,2 +1,2 @@
-curl http://localhost:8083/get-static-message
+curl http://localhost:8083/get-message
 echo ""
