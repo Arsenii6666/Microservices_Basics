@@ -1,2 +1,4 @@
-curl http://localhost:8081/get-messages
+#!/bin/bash
+
+curl http://localhost:8080/get-messages
 echo ""
