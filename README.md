@@ -1,2 +1,2 @@
-# Microservices_Basics
-Міні звіт з демонстрацією роботи: https://docs.google.com/document/d/15yddDljnc56SD5ro7OWaHMAH790RFf57dMWcZgcWYOU/edit?usp=sharing
+# micro_hazelcast
+Міні звіт з демонстрацією роботи: https://docs.google.com/document/d/1kLvQeMyejGi_0LdWFvr4y-J246AWCm1dOEQlTVIbj9E/edit?usp=sharing
