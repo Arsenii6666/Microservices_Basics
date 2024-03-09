@@ -1,5 +1,6 @@
 package main.logging_service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,8 +12,11 @@ import java.util.UUID;
 
 @RestController
 public class LoggingController {
-    private Map<UUID, String> messageMap = new HashMap<>();
-
+    private final Map<UUID, String> messageMap;
+    @Autowired
+    public LoggingController(LoggingService loggingService) {
+        messageMap = LoggingService.hz.getMap("LoggingServiceMap");
+    }
     @PostMapping("/log-message")
     public String logMessage(@RequestBody Map<String, String> payload) {
         UUID uuid = UUID.fromString(payload.get("uuid"));
