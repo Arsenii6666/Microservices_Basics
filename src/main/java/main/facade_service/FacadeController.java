@@ -43,7 +43,7 @@ public class FacadeController {
         int randomPort = loggingServicePorts.get(new Random().nextInt(loggingServicePorts.size()));
         String loggingServiceUrl = "http://localhost:" + randomPort + "/log-message";
         String response = restTemplate.postForObject(loggingServiceUrl, requestEntity, String.class);
-        System.out.println("Message sent");
+        System.out.println("Message sent with UUID: " + uuid + ", Result: " + response);
         return "Message sent with UUID: " + uuid + ", Result: " + response;
     }
 
@@ -55,8 +55,9 @@ public class FacadeController {
         }
         int firstAvailablePort = loggingServicePorts.get(0);
         String loggingResult = restTemplate.getForObject("http://localhost:" + firstAvailablePort + "/get-all-messages", String.class);
-        System.out.println("Messages got");
-        return "Logging: " + loggingResult;
+        String MessagesResult = restTemplate.getForObject("http://localhost:8082/get-message", String.class);
+        System.out.println("Logging: "+loggingResult+"\n"+"Messages: "+MessagesResult+"\n");
+        return "Logging: "+loggingResult+"\n"+"Messages: "+MessagesResult+"\n";
     }
     private void updateLoggingServicePorts() {
         loggingServicePorts = FacadeService.searchLoggingServices();

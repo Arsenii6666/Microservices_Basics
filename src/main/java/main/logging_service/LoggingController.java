@@ -1,5 +1,6 @@
 package main.logging_service;
 
+import com.hazelcast.map.IMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +13,7 @@ import java.util.UUID;
 
 @RestController
 public class LoggingController {
-    private final Map<UUID, String> messageMap;
+    private final IMap<UUID, String> messageMap;
     @Autowired
     public LoggingController(LoggingService loggingService) {
         messageMap = LoggingService.hz.getMap("LoggingServiceMap");
