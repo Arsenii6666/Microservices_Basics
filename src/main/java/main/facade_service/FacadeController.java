@@ -1,6 +1,7 @@
 package main.facade_service;
 
-import main.logging_service.LoggingService;
+import com.hazelcast.collection.IQueue;
+import com.hazelcast.core.HazelcastInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,11 +24,13 @@ public class FacadeController {
     private final RestTemplate restTemplate;
     private List<Integer> loggingServicePorts;
     private List<Integer> messagesServicePorts;
+    private static HazelcastInstance hz;
     @Autowired
     public FacadeController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
         this.loggingServicePorts = FacadeService.LOGGING_PORTS;
         this.messagesServicePorts = FacadeService.MASSAGES_PORTS;
+        hz=FacadeService.hz;
     }
     @PostMapping("/send-message")
     public String sendMessage(@RequestBody String message) {
@@ -45,6 +48,8 @@ public class FacadeController {
         int randomPort = loggingServicePorts.get(new Random().nextInt(loggingServicePorts.size()));
         String loggingServiceUrl = "http://localhost:" + randomPort + "/log-message";
         String response = restTemplate.postForObject(loggingServiceUrl, requestEntity, String.class);
+        IQueue<String> messageQueue = hz.getQueue("message-queue");
+        messageQueue.add(payload.toString());
         System.out.println("Message sent with UUID: " + uuid + ", Result: " + response);
         return "Message sent with UUID: " + uuid + ", Result: " + response;
     }
@@ -55,11 +60,12 @@ public class FacadeController {
         if (loggingServicePorts.isEmpty()) {
             return "No available logging services.";
         }
-        int firstAvailablePort = loggingServicePorts.get(0);
-        String loggingResult = restTemplate.getForObject("http://localhost:" + firstAvailablePort + "/get-all-messages", String.class);
-        String MessagesResult = restTemplate.getForObject("http://localhost:8082/get-message", String.class);
-        System.out.println("Logging: "+loggingResult+"\n"+"Messages: "+MessagesResult+"\n");
-        return "Logging: "+loggingResult+"\n"+"Messages: "+MessagesResult+"\n";
+        int firstAvailableLoggingService = loggingServicePorts.get(0);
+        int randomAvailableMassageService = messagesServicePorts.get(new Random().nextInt(messagesServicePorts.size()));
+        String loggingResult = restTemplate.getForObject("http://localhost:" + firstAvailableLoggingService + "/get-all-messages", String.class);
+        String messagesResult = restTemplate.getForObject("http://localhost:"+randomAvailableMassageService+"/get-message", String.class);
+        System.out.println("Logging: "+loggingResult+"\n"+"Messages: "+messagesResult+"\n");
+        return "Logging: "+loggingResult+"\n"+"Messages: "+messagesResult+"\n";
     }
     private void updateServicePorts() {
         loggingServicePorts = FacadeService.searchLoggingServices();

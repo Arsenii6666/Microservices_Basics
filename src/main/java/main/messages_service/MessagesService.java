@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.net.ServerSocket;
 import java.util.Collections;
@@ -23,7 +22,7 @@ public class MessagesService {
     @Autowired
     private Environment environment;
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(LoggingService.class);
+        SpringApplication app = new SpringApplication(MessagesService.class);
         ServerPort= 8100;
         Boolean PortIsFree=false;
         while (!PortIsFree){
@@ -34,11 +33,11 @@ public class MessagesService {
                 ServerPort++;
             }
         }
-        Config LoggingServiceConfig = new Config();
-        LoggingServiceConfig.setClusterName("MessagesServiceQueue");
-        LoggingServiceConfig.getNetworkConfig().setPort(5702);
-        LoggingServiceConfig.getNetworkConfig().getRestApiConfig().setEnabled(true);
-        hz = Hazelcast.newHazelcastInstance(LoggingServiceConfig);
+        Config MessageServiceConfig = new Config();
+        MessageServiceConfig.setClusterName("MessagesServiceQueue");
+        MessageServiceConfig.getNetworkConfig().setPort(5702);
+        MessageServiceConfig.getNetworkConfig().getRestApiConfig().setEnabled(true);
+        hz = Hazelcast.newHazelcastInstance(MessageServiceConfig);
         app.run(args);
     }
     @EventListener(ContextRefreshedEvent.class)
