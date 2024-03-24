@@ -58,7 +58,7 @@ public class FacadeService {
     }
     @EventListener(ContextRefreshedEvent.class)
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        System.out.println("MessagesService is running on port:" + "8081");
+        System.out.println("FacadeService is running on port:" + "8081");
         int port = hz.getConfig().getNetworkConfig().getPort();
         System.out.println("Hazelcast is running on port: " + port);
     }

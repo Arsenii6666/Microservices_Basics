@@ -40,13 +40,11 @@ public class MessagesController {
         return messageMap.toString();
     }
     private Map<String, String> parsePayloadString(String payloadString) {
-        payloadString = payloadString.replaceAll("[\\[\\]]", "");
-        String[] keyValuePairs = payloadString.split(", ");
         Map<String, String> payloadMap = new HashMap<>();
-        for (String pair : keyValuePairs) {
-            String[] entry = pair.split("=");
-            payloadMap.put(entry[0].trim(), entry[1].trim());
-        }
+        String[] parts = payloadString.split(";\n/");
+        payloadMap.put("uuid", parts[0]);
+        payloadMap.put("msg", parts[1]);
         return payloadMap;
     }
+
 }

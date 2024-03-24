@@ -23,7 +23,7 @@ public class LoggingController {
         UUID uuid = UUID.fromString(payload.get("uuid"));
         String message = payload.get("msg");
         messageMap.put(uuid, message);
-        System.out.println("Received message: " + message);
+        System.out.println("Received message: " + message + "UUID:"+uuid+"\n");
         return "Message logged successfully";
 
     }

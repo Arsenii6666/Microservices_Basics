@@ -49,7 +49,7 @@ public class FacadeController {
         String loggingServiceUrl = "http://localhost:" + randomPort + "/log-message";
         String response = restTemplate.postForObject(loggingServiceUrl, requestEntity, String.class);
         IQueue<String> messageQueue = hz.getQueue("message-queue");
-        messageQueue.add(payload.toString());
+        messageQueue.add(uuid.toString()+";\n/"+ message);
         System.out.println("Message sent with UUID: " + uuid + ", Result: " + response);
         return "Message sent with UUID: " + uuid + ", Result: " + response;
     }
