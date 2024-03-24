@@ -22,14 +22,16 @@ public class FacadeController {
 
     private final RestTemplate restTemplate;
     private List<Integer> loggingServicePorts;
+    private List<Integer> messagesServicePorts;
     @Autowired
     public FacadeController(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
         this.loggingServicePorts = FacadeService.LOGGING_PORTS;
+        this.messagesServicePorts = FacadeService.MASSAGES_PORTS;
     }
     @PostMapping("/send-message")
     public String sendMessage(@RequestBody String message) {
-        updateLoggingServicePorts();
+        updateServicePorts();
         if (loggingServicePorts.isEmpty()) {
             return "No available logging services.";
         }
@@ -49,7 +51,7 @@ public class FacadeController {
 
     @GetMapping("/get-messages")
     public String getMessages() {
-        updateLoggingServicePorts();
+        updateServicePorts();
         if (loggingServicePorts.isEmpty()) {
             return "No available logging services.";
         }
@@ -59,7 +61,8 @@ public class FacadeController {
         System.out.println("Logging: "+loggingResult+"\n"+"Messages: "+MessagesResult+"\n");
         return "Logging: "+loggingResult+"\n"+"Messages: "+MessagesResult+"\n";
     }
-    private void updateLoggingServicePorts() {
+    private void updateServicePorts() {
         loggingServicePorts = FacadeService.searchLoggingServices();
+        messagesServicePorts = FacadeService.searchMassageServices();
     }
 }
